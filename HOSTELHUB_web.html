@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhinaw · HostelHub – Find PG, Mess & Flats for Students</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #faf9fc;
+            color: #1e1b2b;
+            line-height: 1.5;
+        }
+
+        /* ===== STICKY NAVBAR: visible on scroll ===== */
+        .navbar {
+            background: white;
+            padding: 0.8rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #f0eef5;
+            /* --- STICKY BEHAVIOR --- */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.25s ease-in-out;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+        }
+        
+        /* subtle shadow enhancement when scrolled */
+        .navbar.scrolled {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(2px);
+            border-bottom-color: #e9e5f5;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;          /* increased gap for larger logo */
+            font-weight: 700;
+            font-size: 2rem;    /* bigger brand text */
+            letter-spacing: -0.02em;
+        }
+
+        /* FIX: LOGO NOW MUCH BIGGER IN SIZE (prominent & crisp) */
+        .logo-img {
+            width: 68px;         /* was 44px -> now bigger */
+            height: 68px;
+            object-fit: cover;
+            border-radius: 20px;  /* slightly more rounded but elegant */
+            display: block;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            border: 2px solid #f0edfe;
+        }
+        .logo-img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(79, 57, 246, 0.2);
+        }
+
+        .logo-icon-fallback {
+            display: none;
+        }
+
+        .logo span {
+            background: linear-gradient(135deg, #2d1b6b, #4f39f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2rem;
+            letter-spacing: -0.3px;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2d2a3a;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: #4f39f6;
+        }
+
+        .btn-outline {
+            border: 1.5px solid #4f39f6;
+            background: transparent;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #4f39f6;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .btn-outline:hover {
+            background: #4f39f6;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #4f39f6;
+            border: none;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(79, 57, 246, 0.25);
+            transition: 0.15s;
+            border: 1px solid #4f39f6;
+        }
+
+        .btn-primary:hover {
+            background: #3b2ace;
+            box-shadow: 0 8px 22px rgba(79, 57, 246, 0.35);
+        }
+
+        .btn-large {
+            padding: 0.9rem 2.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* hero */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3rem 5% 4rem;
+            gap: 3rem;
+            background: white;
+        }
+
+        .hero-text {
+            flex: 1 1 350px;
+        }
+
+        .hero-text h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #1e1b2b, #4f39f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text .highlight {
+            color: #4f39f6;
+            background: none;
+            -webkit-text-fill-color: #4f39f6;
+        }
+
+        .hero-sub {
+            font-size: 1.3rem;
+            color: #4a455c;
+            margin: 1.5rem 0 2rem;
+            max-width: 550px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            flex: 1 1 350px;
+            background: #f1effb;
+            border-radius: 40px;
+            padding: 2rem 2rem 0 2rem;
+            text-align: center;
+            box-shadow: 0 30px 40px -20px rgba(0,0,0,0.15);
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -8px 20px rgba(0,0,0,0.05);
+        }
+
+        .pill-tag {
+            background: #e5e1fc;
+            color: #2d1b6b;
+            border-radius: 60px;
+            padding: 0.3rem 1rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        /* main container */
+        .container {
+            padding: 2rem 5% 4rem;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e1b2b;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #5f5b70;
+            margin-top: 0.8rem;
+        }
+
+        /* student cards / listing preview */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem;
+            box-shadow: 0 15px 30px -12px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            border: 1px solid #f3f1f9;
+        }
+
+        .property-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card-badge {
+            background: #e6e2ff;
+            color: #3f2e9e;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+        }
+
+        .property-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .property-title i {
+            color: #4f39f6;
+            font-size: 1.8rem;
+            background: #f0edfe;
+            padding: 0.6rem;
+            border-radius: 18px;
+        }
+
+        .property-location {
+            color: #6f6b7e;
+            margin: 0.5rem 0 0.8rem;
+            font-size: 1rem;
+        }
+
+        .property-location i {
+            margin-right: 0.3rem;
+            color: #4f39f6;
+        }
+
+        .property-facilities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            margin: 1.2rem 0;
+            font-size: 0.95rem;
+            color: #2d2a3a;
+            border-top: 1px dashed #ddd8ec;
+            padding-top: 1.2rem;
+        }
+
+        .property-facilities span i {
+            margin-right: 0.3rem;
+            color: #4f39f6;
+            width: 1.2rem;
+        }
+
+        .rent-tag {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e1b2b;
+        }
+
+        .rent-tag small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #7b788b;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .terms-mini {
+            background: #f6f4ff;
+            border-radius: 30px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            color: #3b2ace;
+            font-weight: 500;
+        }
+
+        /* owner upload card (big) */
+        .owner-zone {
+            background: linear-gradient(145deg, #1e1b2b, #2f2860);
+            border-radius: 48px;
+            padding: 3rem 3.5rem;
+            color: white;
+            margin: 3rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .owner-zone h3 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .owner-zone ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .owner-zone li i {
+            color: #b7acff;
+            margin-right: 0.7rem;
+        }
+
+        .owner-upload-form {
+            background: white;
+            border-radius: 38px;
+            padding: 2.2rem;
+            color: #1e1b2b;
+            flex: 1 1 380px;
+            box-shadow: 0 25px 40px -10px #0d0b1b;
+        }
+
+        .form-row {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #2d2a3a;
+        }
+
+        .form-row input, .form-row textarea, .form-row select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border-radius: 30px;
+            border: 1.5px solid #e4e0f0;
+            font-size: 1rem;
+            background: #fbfaff;
+            transition: 0.2s;
+        }
+
+        .form-row input:focus, .form-row textarea:focus {
+            border-color: #4f39f6;
+            outline: none;
+            background: white;
+        }
+
+        .terms-box {
+            background: #f2efff;
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 5px solid #4f39f6;
+        }
+
+        .btn-block {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* How it works */
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+
+        .step-item {
+            background: white;
+            border-radius: 38px;
+            padding: 2rem 1.8rem;
+            flex: 1 1 200px;
+            text-align: center;
+            box-shadow: 0 20px 30px -12px #e3def5;
+        }
+
+        .step-icon {
+            background: #4f39f6;
+            width: 70px;
+            height: 70px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 10px 15px -5px #7b6ef7;
+        }
+
+        .step-item h4 {
+            font-size: 1.6rem;
+            margin-bottom: 0.7rem;
+        }
+
+        /* footer */
+        .footer {
+            background: #0f0c1f;
+            color: #cdc7e6;
+            padding: 3rem 5% 2rem;
+            border-radius: 50px 50px 0 0;
+            margin-top: 3rem;
+        }
+
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .footer-links a {
+            color: #cdc7e6;
+            text-decoration: none;
+            display: block;
+            margin: 0.7rem 0;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #2d2844;
+        }
+        .highlight-badge {
+            background: #4f39f6;
+            color: white;
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+        /* responsive adjustments: keep logo prominent even on mobile */
+        @media (max-width: 680px) {
+            .logo span {
+                font-size: 1.6rem;
+            }
+            .logo-img {
+                width: 52px;
+                height: 52px;
+            }
+            .navbar {
+                gap: 0.8rem;
+                padding: 0.6rem 5%;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .logo {
+                gap: 0.7rem;
+            }
+        }
+        /* clean icon fallback */
+        .fa-house-circle-check {
+            display: none;
+        }
+        /* ensure actual image takes precedence */
+        .logo i {
+            display: none;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- navigation: STICKY + always visible + LARGER LOGO -->
+    <div class="navbar" id="mainNavbar">
+        <div class="logo">
+            <!-- BIGGER LOGO: size increased to 68x68px (formerly 44px) and more visual weight -->
+            <img src="Abhinaw.jpeg" alt="HostelHub Logo | Abhinaw" class="logo-img" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.logo-icon-fallback').style.display='inline-block';">
+            <i class="fas fa-house-circle-check logo-icon-fallback" style="display: none; font-size: 2.4rem; color:#4f39f6;"></i>
+            <span>HostelHub</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Find PG</a>
+            <a href="#">Mess</a>
+            <a href="#">Rentals</a>
+            <a href="#">For owners</a>
+            <button class="btn-outline"><i class="fa-regular fa-user"></i> Sign in</button>
+        </div>
+    </div>
+
+    <!-- hero section -->
+    <div class="hero">
+        <div class="hero-text">
+            <div class="pill-tag"><i class="fa-regular fa-star"></i> 4,800+ students already home</div>
+            <h1>PG · Mess · Flats <br><span class="highlight">for students</span>, by students</h1>
+            <p class="hero-sub">Find your perfect nest near college. Owners list with full terms, rent & facilities — no surprises.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary btn-large"><i class="fa-solid fa-magnifying-glass"></i> Search stay</button>
+                <button class="btn-outline btn-large" style="border-width:2px;"><i class="fa-regular fa-building"></i> I'm an owner</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <!-- abstract illustration (pure CSS representation) -->
+            <div style="background: #dad3ff; border-radius: 24px; height: 210px; display: flex; align-items: center; justify-content: center; color: #3a2b7a; font-size: 5rem;">
+                <i class="fas fa-bed"></i><i class="fas fa-utensils" style="margin-left: 1rem;"></i>
+            </div>
+            <p style="margin-top: 1rem; font-weight: 500;"><i class="fa-regular fa-circle-check" style="color:#4f39f6;"></i> Verified by HostelHub</p>
+        </div>
+    </div>
+
+    <!-- main container -->
+    <div class="container">
+
+        <!-- student view: listings -->
+        <div class="section-header">
+            <h2>🏠 Recently added for students</h2>
+            <p>PG, mess, or flat — see what owners offer (facilities, terms, rent)</p>
+        </div>
+
+        <div class="card-grid">
+            <!-- card 1 - PG -->
+            <div class="property-card">
+                <span class="card-badge"><i class="fa-regular fa-building"></i> PG for boys</span>
+                <div class="property-title">
+                    Heera PG <i class="fas fa-wifi"></i>
+                </div>
+                <div class="property-location"><i class="fa-solid fa-location-dot"></i> near Vidya Nagar, 1.2km from university</div>
+                <div class="property-facilities">
+                    <span><i class="fas fa-utensils"></i> Mess (veg/non-veg)</span>
+                    <span><i class="fas fa-wifi"></i> WiFi 100Mbps</span>
+                    <span><i class="fas fa-snowflake"></i> AC</span>
+                    <span><i class="fas fa-book"></i> Study table</span>
+                </div>
+                <div class="terms-mini"><i class="fa-regular fa-file-lines"></i> Terms: 2 months deposit, no visitors after 9pm</div>
+                <div class="card-footer">
+                    <div class="rent-tag">₹8,200 <small>/month</small></div>
+                    <button class="btn-outline" style="padding:0.4rem 1.2rem;">view</button>
+                </div>
+            </div>
+
+            <!-- card 2 - Mess -->
+            <div class="property-card">
+                <span class="card-badge"><i class="fa-regular fa-pot-food"></i> Mess (tiffin service)</span>
+                <div class="property-title">
+                    Annapurna Mess <i class="fas fa-bowl-food"></i>
+                </div>
+                <div class="property-location"><i class="fa-solid fa-location-dot"></i> opp. central library</div>
+                <div class="property-facilities">
+                    <span><i class="fas fa-leaf"></i> Pure veg</span>
+                    <span><i class="fas fa-calendar-week"></i> 6 days</span>
+                    <span><i class="fas fa-egg"></i> Egg available</span>
+                    <span><i class="fas fa-truck"></i> Home delivery</span>
+                </div>
+                <div class="terms-mini"><i class="fa-regular fa-file-lines"></i> Terms: pay by 5th, 1 week vacation hold</div>
+                <div class="card-footer">
+                    <div class="rent-tag">₹2,800 <small>/month</small></div>
+                    <button class="btn-outline" style="padding:0.4rem 1.2rem;">view</button>
+                </div>
+            </div>
+
+            <!-- card 3 - flat for rent -->
+            <div class="property-card">
+                <span class="card-badge"><i class="fa-regular fa-building"></i> 2BHK flat (girls only)</span>
+                <div class="property-title">
+                    Sunshine Apartments <i class="fas fa-key"></i>
+                </div>
+                <div class="property-location"><i class="fa-solid fa-location-dot"></i> 5 min walk to east campus</div>
+                <div class="property-facilities">
+                    <span><i class="fas fa-person-booth"></i> Fully furnished</span>
+                    <span><i class="fas fa-car"></i> Parking</span>
+                    <span><i class="fas fa-shield"></i> Security</span>
+                    <span><i class="fas fa-solar-panel"></i> Geyser</span>
+                </div>
+                <div class="terms-mini"><i class="fa-regular fa-file-lines"></i> Terms: 11 months, no smoking, 2 months notice</div>
+                <div class="card-footer">
+                    <div class="rent-tag">₹22,000 <small>/month</small></div>
+                    <button class="btn-outline" style="padding:0.4rem 1.2rem;">view</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- OWNER UPLOAD ZONE (core feature) -->
+        <div class="owner-zone">
+            <div style="flex:1 1 300px;">
+                <h3><i class="fa-regular fa-pen-to-square"></i> Owner? List your property</h3>
+                <p style="opacity:0.85; font-size:1.2rem;">Set your terms, facilities, rent — and reach thousands of students.</p>
+                <ul>
+                    <li><i class="fa-regular fa-circle-check"></i> PG / hostel</li>
+                    <li><i class="fa-regular fa-circle-check"></i> Mess / tiffin</li>
+                    <li><i class="fa-regular fa-circle-check"></i> Flat / house</li>
+                    <li><i class="fa-regular fa-circle-check"></i> Pay per seat</li>
+                </ul>
+                <p><strong>📋 example terms:</strong> "deposit 2 months, only vegetarian, laundry included"</p>
+            </div>
+            <div class="owner-upload-form">
+                <h4 style="font-size:1.8rem; margin-bottom:0.5rem;">📋 Upload your listing</h4>
+                <p style="color:#6f6b7e; margin-bottom:1.5rem;">Fill details – they will appear to students</p>
+                <div class="form-row">
+                    <label>Property type</label>
+                    <select>
+                        <option>PG (paying guest)</option>
+                        <option>Mess / dining</option>
+                        <option>Flat / house (rent)</option>
+                        <option>Shared room</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Title / name</label>
+                    <input type="text" placeholder="e.g. Sai PG, Central Mess, etc.">
+                </div>
+                <div class="form-row">
+                    <label>Full address & nearby landmark</label>
+                    <input type="text" placeholder="near medical college, opposite bus stop">
+                </div>
+                <div class="form-row">
+                    <label>Monthly rent (₹)</label>
+                    <input type="number" placeholder="e.g. 6500">
+                </div>
+                <div class="form-row">
+                    <label>Facilities (comma separated)</label>
+                    <input type="text" placeholder="WiFi, AC, food, washing machine, parking">
+                </div>
+                <div class="terms-box">
+                    <label style="font-weight:700; color:#1e1b2b;"><i class="fa-regular fa-file-lines"></i> Terms & conditions</label>
+                    <textarea rows="3" placeholder="e.g. 2 months deposit, only girls, no alcohol, 10pm curfew, meals included..." style="width:100%; margin-top:0.7rem; border-radius:24px; padding:0.8rem; border:1px solid #ddd8ec;"></textarea>
+                </div>
+                <button class="btn-primary btn-block"><i class="fa-regular fa-cloud-arrow-up"></i> Publish listing (free)</button>
+                <p style="text-align:center; margin-top:1rem; font-size:0.85rem;"><i class="fa-regular fa-eye"></i> students will see your terms & rent instantly</p>
+            </div>
+        </div>
+
+        <!-- steps for both actors -->
+        <div class="section-header" style="margin-top:2rem;">
+            <h2>How HostelHub works</h2>
+            <p>One platform for students & owners — transparent and simple</p>
+        </div>
+        <div class="steps">
+            <div class="step-item">
+                <div class="step-icon"><i class="fa-regular fa-magnifying-glass"></i></div>
+                <h4>1. Browse</h4>
+                <p>Student searches PG, Mess or flat with filters (facility, rent, location).</p>
+            </div>
+            <div class="step-item">
+                <div class="step-icon"><i class="fa-regular fa-file-signature"></i></div>
+                <h4>2. Check terms</h4>
+                <p>Every owner uploads their terms, deposit, rules — no verbal ambiguity.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-icon"><i class="fa-regular fa-handshake"></i></div>
+                <h4>3. Connect</h4>
+                <p>Chat or visit, then move in with full clarity. Owners manage listing.</p>
+            </div>
+        </div>
+
+        <!-- extra facility showcase -->
+        <div style="background: white; border-radius: 48px; padding: 2.5rem; margin: 2.5rem 0;">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;">
+                <div style="flex:1; min-width:250px;">
+                    <h2 style="font-size: 2.2rem;">🔍 Search with filters</h2>
+                    <p style="font-size: 1.1rem; color: #3e3a4a;">Mess with veg only? PG with AC? Flat with washing machine? Students easily find exactly what they need.</p>
+                    <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 1.5rem 0;">
+                        <span class="terms-mini" style="background: #eceaff; padding:0.6rem 1.2rem;"><i class="fa-regular fa-bell"></i> Mess near college</span>
+                        <span class="terms-mini" style="background: #eceaff; padding:0.6rem 1.2rem;"><i class="fa-regular fa-wifi"></i> WiFi included</span>
+                        <span class="terms-mini" style="background: #eceaff; padding:0.6rem 1.2rem;"><i class="fa-regular fa-person"></i> girls PG</span>
+                    </div>
+                </div>
+                <div style="flex:1; background:#f5f2ff; border-radius: 38px; padding:1.8rem;">
+                    <i class="fas fa-quote-right" style="font-size:2rem; color:#4f39f6; opacity:0.6;"></i>
+                    <p style="font-weight: 500; font-size:1.2rem;">“I could see the exact terms – deposit, food timings – before even calling the owner. Made my search so peaceful.” — Priya, 3rd year</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <div class="footer">
+        <div class="footer-grid">
+            <div style="max-width: 260px;">
+                <div class="footer-logo"><i class="fas fa-house-circle-check"></i> HostelHub</div>
+                <p style="margin: 1rem 0 0.5rem;">India’s most student-centric rental & mess discovery platform.</p>
+                <p><i class="fa-regular fa-envelope"></i> hello@hostelhub.in</p>
+            </div>
+            <div class="footer-links">
+                <h4 style="color:white;">For students</h4>
+                <a href="#">Search PG</a>
+                <a href="#">Search mess</a>
+                <a href="#">Flats on rent</a>
+                <a href="#">Buddy referral</a>
+            </div>
+            <div class="footer-links">
+                <h4 style="color:white;">For owners</h4>
+                <a href="#">Post property free</a>
+                <a href="#">Owner dashboard</a>
+                <a href="#">Terms & conditions</a>
+                <a href="#">Pricing (free for now)</a>
+            </div>
+            <div class="footer-links">
+                <h4 style="color:white;">Company</h4>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy</a>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 HostelHub · BY Abhinaw Singh 🎓 | Bigger logo for bold identity
+        </div>
+    </div>
+
+    <!-- simple JS to add 'scrolled' class to navbar when scrolled down (enhances visibility feedback) -->
+    <script>
+        (function() {
+            const navbar = document.getElementById('mainNavbar');
+            if (navbar) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 10) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
